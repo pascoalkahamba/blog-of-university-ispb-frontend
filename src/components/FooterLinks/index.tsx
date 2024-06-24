@@ -7,6 +7,7 @@ import {
 } from "@tabler/icons-react";
 import classes from "./styles.module.css";
 import { data } from "@/mocks";
+import { ActionToggle } from "../ActionToggle";
 
 export function FooterLinks() {
   const groups = data.map((group) => {
@@ -70,6 +71,7 @@ export function FooterLinks() {
               stroke={1.5}
             />
           </ActionIcon>
+          <ActionToggle />
         </Group>
       </Container>
     </footer>
