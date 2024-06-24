@@ -1,9 +1,5 @@
-import CardsCarousel from "@/components/CardsCarousel";
+import Dashboard from "./dashboard/page";
 
 export default function Home() {
-  return (
-    <section style={{ padding: "1rem" }}>
-      <CardsCarousel />
-    </section>
-  );
+  return <Dashboard />;
 }
