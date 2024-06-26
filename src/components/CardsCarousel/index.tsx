@@ -11,20 +11,23 @@ import {
 } from "@mantine/core";
 import classes from "./styles.module.css";
 import { carouselData } from "@/mocks";
+import Link from "next/link";
 
 interface CardProps {
   image: string;
   title: string;
   category: string;
+  height: string;
+  link: string;
 }
 
-function Card({ image, title, category }: CardProps) {
+export function Card({ image, title, category, height, link }: CardProps) {
   return (
     <Paper
       shadow="md"
       p="xl"
       radius="md"
-      style={{ backgroundImage: `url(${image})` }}
+      style={{ backgroundImage: `url(${image})`, height: rem(height) }}
       className={classes.card}
     >
       <div>
@@ -35,19 +38,21 @@ function Card({ image, title, category }: CardProps) {
           {title}
         </Title>
       </div>
-      <Button variant="white" color="dark">
-        Read article
-      </Button>
+      <Link href={link}>
+        <Button variant="white" color="dark">
+          Read article
+        </Button>
+      </Link>
     </Paper>
   );
 }
 
-export default function CardsCarousel() {
+export function CardsCarousel() {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const slides = carouselData.map((item) => (
     <Carousel.Slide key={item.title}>
-      <Card {...item} />
+      <Card {...item} height={`440px`} />
     </Carousel.Slide>
   ));
 
@@ -58,6 +63,7 @@ export default function CardsCarousel() {
       slideGap={{ base: rem(2), sm: "xl" }}
       align="start"
       slidesToScroll={mobile ? 1 : 2}
+      style={{ height: "420px" }}
     >
       {slides}
     </Carousel>

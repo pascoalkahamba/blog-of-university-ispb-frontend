@@ -1,11 +1,12 @@
-import CardsCarousel from "@/components/CardsCarousel";
+import { CardsCarousel } from "@/components/CardsCarousel";
 import CardsPost from "@/components/CardsPost";
-import classes from "./styles.module.css";
 
 export default function Dashboard() {
   return (
-    <section className={classes.container}>
+    <section>
       <CardsCarousel />
+      <CardsPost />
+      <CardsPost />
       <CardsPost />
     </section>
   );

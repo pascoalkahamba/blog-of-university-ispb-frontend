@@ -1,9 +1,11 @@
 "use client";
 
-import { Container, Grid, SimpleGrid, Skeleton, rem } from "@mantine/core";
+import { Container, Grid, SimpleGrid, rem } from "@mantine/core";
 import classes from "./styles.module.css";
+import { Card } from "../CardsCarousel";
+import { carouselData } from "@/mocks";
 
-const PRIMARY_COL_HEIGHT = rem(410);
+const PRIMARY_COL_HEIGHT = rem("200%");
 
 export default function CardsPost() {
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
@@ -15,28 +17,15 @@ export default function CardsPost() {
         spacing="md"
         className={classes.cards}
       >
-        <Skeleton height={PRIMARY_COL_HEIGHT} radius="md" animate={false} />
+        <Card {...carouselData[4]} height={SECONDARY_COL_HEIGHT} />
         <Grid gutter="md">
-          <Grid.Col>
-            <Skeleton
-              height={SECONDARY_COL_HEIGHT}
-              radius="md"
-              animate={false}
-            />
+          <Card {...carouselData[3]} height={SECONDARY_COL_HEIGHT} />
+
+          <Grid.Col span={6}>
+            <Card {...carouselData[1]} height={SECONDARY_COL_HEIGHT} />
           </Grid.Col>
           <Grid.Col span={6}>
-            <Skeleton
-              height={SECONDARY_COL_HEIGHT}
-              radius="md"
-              animate={false}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Skeleton
-              height={SECONDARY_COL_HEIGHT}
-              radius="md"
-              animate={false}
-            />
+            <Card {...carouselData[2]} height={SECONDARY_COL_HEIGHT} />
           </Grid.Col>
         </Grid>
       </SimpleGrid>
