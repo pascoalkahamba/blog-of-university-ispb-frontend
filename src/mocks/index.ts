@@ -1,10 +1,10 @@
 const links = [
-  { link: "/about", label: "Features" },
-  { link: "/pricing", label: "Pricing" },
-  { link: "/learn", label: "Learn" },
-  { link: "/community", label: "Community" },
-  { link: "/university", label: "University" },
-  { link: "/college", label: "College" },
+  { link: "/about", label: "Informática" },
+  { link: "/pricing", label: "Medicina" },
+  { link: "/learn", label: "Educação" },
+  { link: "/community", label: "Mecanica" },
+  { link: "/university", label: "Departamento" },
+  { link: "/college", label: "Higenhiaria" },
 ];
 
 const data = [

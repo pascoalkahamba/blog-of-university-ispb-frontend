@@ -35,7 +35,7 @@ export function FooterLinks() {
     <footer className={classes.footer}>
       <Container className={classes.inner}>
         <div className={classes.logo}>
-          <h1>ISPB</h1>
+          <h1 className="text-xl font-bold">ISPB</h1>
           <Text size="xs" c="dimmed" className={classes.description}>
             Build fully functional accessible web applications faster than ever
           </Text>

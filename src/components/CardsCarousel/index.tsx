@@ -40,7 +40,7 @@ export function Card({ image, title, category, height, link }: CardProps) {
       </div>
       <Link href={link}>
         <Button variant="white" color="dark">
-          Read article
+          Leia o artigo
         </Button>
       </Link>
     </Paper>

@@ -1,11 +1,9 @@
 import "@mantine/core/styles.css";
-// import "@/app/main.css";
+import "@/app/main.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import Providers from "@/utils/provider";
-import { HeaderSearch } from "@/components/HeaderSearch";
-import { FooterLinks } from "@/components/FooterLinks";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +24,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <MantineProvider>
-          <HeaderSearch />
           <Providers>{children}</Providers>
-          <FooterLinks />
         </MantineProvider>
       </body>
     </html>

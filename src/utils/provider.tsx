@@ -19,7 +19,7 @@ export default function Providers({ children }: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      {children}
+      <section>{children}</section>
     </QueryClientProvider>
   );
 }
