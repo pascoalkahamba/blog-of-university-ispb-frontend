@@ -2,7 +2,6 @@
 
 import { useToggle, upperFirst } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { DateInput } from "@mantine/dates";
 import { useRouter } from "next/navigation";
 import {
   TextInput,
@@ -22,9 +21,8 @@ import classes from "./styles.module.css";
 import { useState } from "react";
 import Link from "next/link";
 
-export default function AuthCreateAccount(props: PaperProps) {
+export default function AuthSignin(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
-  const [value, setValue] = useState<Date | null>(null);
   const router = useRouter();
   const form = useForm({
     initialValues: {
@@ -44,14 +42,20 @@ export default function AuthCreateAccount(props: PaperProps) {
   });
 
   const handleSubmit = () => {
-    console.log("Every is Good");
-    router.push("/signin");
+    console.log("Everything is good.");
+    router.push("/dashboard");
   };
 
   return (
-    <Paper radius="md" p="xl" withBorder {...props} className=" w-[35%]">
+    <Paper
+      radius="md"
+      p="xl"
+      withBorder
+      {...props}
+      className=" w-[35%] flex flex-col justify-center"
+    >
       <Text size="lg" fw={500} className="text-center font-bold">
-        Criar Conta
+        Fazer Login
       </Text>
 
       <Divider label="Blog do ISPB" labelPosition="center" my="lg" />
@@ -59,19 +63,9 @@ export default function AuthCreateAccount(props: PaperProps) {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
-            label="Nome"
-            required
-            placeholder="Seu nome"
-            value={form.values.name}
-            onChange={(event) =>
-              form.setFieldValue("name", event.currentTarget.value)
-            }
-            radius="md"
-          />
-
-          <TextInput
             required
             label="Email"
+            type="email"
             placeholder="pascoalkahamba25@gmail.com"
             value={form.values.email}
             onChange={(event) =>
@@ -95,50 +89,16 @@ export default function AuthCreateAccount(props: PaperProps) {
             }
             radius="md"
           />
-
-          <PasswordInput
-            required
-            label="Confirma a senha"
-            placeholder="Sua senha"
-            value={form.values.password}
-            onChange={(event) =>
-              form.setFieldValue("password", event.currentTarget.value)
-            }
-            error={
-              form.errors.password &&
-              "Password should include at least 6 characters"
-            }
-            radius="md"
-          />
-
-          <DateInput
-            required
-            value={value}
-            onChange={setValue}
-            label="Data de nascimento"
-            placeholder="Digite sua data"
-          />
-          <Select
-            mt="md"
-            required
-            comboboxProps={{ withinPortal: true }}
-            data={["Masculino", "Femenino"]}
-            placeholder="Escolha o genero"
-            label="Selecione seu genero"
-            classNames={classes}
-          />
-
-          <Checkbox
-            label="Você é estudante do ISPB"
-            checked={form.values.terms}
-            onChange={(event) =>
-              form.setFieldValue("terms", event.currentTarget.checked)
-            }
-          />
+          <Link
+            href="/forgotPassword"
+            className=" mt-[-10px] text-blue-500 hover:underline"
+          >
+            <span className="text-xs talic">Esqueceu a senha</span>
+          </Link>
         </Stack>
 
         <Group justify="space-between" mt="xl">
-          <Link href="/signin">
+          <Link href="/createAccount">
             <Anchor
               component="button"
               type="button"
@@ -146,11 +106,11 @@ export default function AuthCreateAccount(props: PaperProps) {
               onClick={() => toggle()}
               size="xs"
             >
-              Já tenho uma conta? Entrar
+              Não tenho uma conta? Cadastrar
             </Anchor>
           </Link>
           <Button type="submit" radius="xl">
-            Cadastrar
+            Entrar
           </Button>
         </Group>
       </form>
