@@ -1,5 +1,5 @@
-import Dashboard from "./(app)/dashboard/page";
+import Signin from "./(auth)/signin/page";
 
-export default function Home() {
-  return <Dashboard />;
+export default function HomePage() {
+  return <Signin />;
 }
