@@ -9,7 +9,7 @@ import classes from "./styles.module.css";
 import { data } from "@/mocks";
 import { ActionToggle } from "../ActionToggle";
 
-export function FooterLinks() {
+export default function FooterMain() {
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
       <Text<"a">

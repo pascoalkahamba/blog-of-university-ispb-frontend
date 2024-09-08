@@ -27,7 +27,6 @@ export default function AuthSignin(props: PaperProps) {
   const form = useForm({
     initialValues: {
       email: "",
-      name: "",
       password: "",
       terms: true,
     },

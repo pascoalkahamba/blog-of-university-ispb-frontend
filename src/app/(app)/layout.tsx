@@ -1,15 +1,16 @@
-import { FooterLinks } from "@/components/FooterLinks";
-import { HeaderSearch } from "@/components/HeaderSearch";
+import FooterMain from "@/components/FooterMain";
+import HeaderMain from "@/components/HeaderMain";
 
-interface AppLayoutProps {
+interface LayoutAppProps {
   children: React.ReactNode;
 }
-export default function AppLayout({ children }: AppLayoutProps) {
+
+export default function LayoutApp({ children }: LayoutAppProps) {
   return (
     <section>
-      <HeaderSearch />
-      {children}
-      <FooterLinks />
+      <HeaderMain />
+      <div className="pt-[3rem]">{children}</div>
+      <FooterMain />
     </section>
   );
 }

@@ -1,9 +1,7 @@
 "use client";
-
-import { useToggle, upperFirst } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { DateInput } from "@mantine/dates";
 import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 import {
   TextInput,
   PasswordInput,
@@ -19,34 +17,93 @@ import {
   Select,
 } from "@mantine/core";
 import classes from "./styles.module.css";
-import { useState } from "react";
+import { zodResolver } from "mantine-form-zod-resolver";
 import Link from "next/link";
+import { useCreateAccount } from "@/hooks/useCreateAccount";
+import { createdAccount, getAllCourses } from "@/server";
+import { TCreateAccountProps } from "@/@types";
+import { createStudentSchema } from "@/schemas";
+import useGetEverything from "@/hooks/useGetEverything";
+import { useMemo } from "react";
 
 export default function AuthCreateAccount(props: PaperProps) {
-  const [type, toggle] = useToggle(["login", "register"]);
-  const [value, setValue] = useState<Date | null>(null);
   const router = useRouter();
+  const { data: courses } = useGetEverything(getAllCourses, "allCourses");
+  const { mutation } = useCreateAccount(
+    createdAccount,
+    showNotificationOnSuccess,
+    showNotificationOnError
+  );
+
+  function showNotificationOnSuccess() {
+    notifications.show({
+      title: "Criação de cota",
+      message: "Post criado com sucesso.",
+      position: "top-right",
+      color: "blue",
+    });
+    router.push("/signin");
+    form.reset();
+  }
+  function showNotificationOnError() {
+    notifications.show({
+      title: "Criação de cota",
+      message: "Algo deu errado verifique os dados e tente novamente.",
+      position: "top-right",
+      color: "red",
+    });
+  }
+
+  const allCourses = useMemo(() => {
+    return courses?.map(({ id, name }) => ({ value: `${id}`, label: name }));
+  }, [courses]);
+
   const form = useForm({
     initialValues: {
       email: "",
-      name: "",
-      password: "",
-      terms: true,
+      username: "",
+      firstPassword: "",
+      secondPassword: "",
+      registrationNumber: 0,
+      courseId: 0,
+      contact: 0,
+      isStudent: true,
     },
-
-    validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
-      password: (val) =>
-        val.length <= 6
-          ? "Password should include at least 6 characters"
-          : null,
-    },
+    validate: zodResolver(createStudentSchema),
   });
 
-  const handleSubmit = () => {
-    console.log("Every is Good");
-    router.push("/signin");
-  };
+  async function handleSubmit(values: TCreateAccountProps) {
+    const {
+      contact,
+      email,
+      firstPassword,
+      secondPassword,
+      isStudent,
+      username,
+      courseId,
+      registrationNumber,
+    } = values;
+
+    if (firstPassword.trim() !== secondPassword.trim()) {
+      notifications.show({
+        title: "Criação de conta",
+        message: "As senhas devem ser iguais.",
+        position: "top-right",
+        color: "red",
+      });
+      return;
+    }
+    console.log("values", values);
+    mutation.mutate({
+      contact,
+      email,
+      password: firstPassword,
+      isStudent,
+      username,
+      courseId,
+      registrationNumber,
+    });
+  }
 
   return (
     <Paper radius="md" p="xl" withBorder {...props} className=" w-[35%]">
@@ -62,11 +119,12 @@ export default function AuthCreateAccount(props: PaperProps) {
             label="Nome"
             required
             placeholder="Seu nome"
-            value={form.values.name}
+            value={form.values.username}
             onChange={(event) =>
-              form.setFieldValue("name", event.currentTarget.value)
+              form.setFieldValue("username", event.currentTarget.value)
             }
             radius="md"
+            error={form.errors.username}
           />
 
           <TextInput
@@ -77,82 +135,90 @@ export default function AuthCreateAccount(props: PaperProps) {
             onChange={(event) =>
               form.setFieldValue("email", event.currentTarget.value)
             }
-            error={form.errors.email && "Invalid email"}
             radius="md"
+            error={form.errors.email}
           />
+          <div className="w-full flex items-center gap-2">
+            <PasswordInput
+              required
+              label="Senha"
+              placeholder="Sua senha"
+              className="w-[50%]"
+              value={form.values.firstPassword}
+              onChange={(event) =>
+                form.setFieldValue("firstPassword", event.currentTarget.value)
+              }
+              radius="md"
+              error={form.errors.firstPassword}
+            />
 
-          <PasswordInput
+            <PasswordInput
+              required
+              label="Confirma a senha"
+              placeholder="Sua senha"
+              className="w-[50%]"
+              value={form.values.secondPassword}
+              onChange={(event) =>
+                form.setFieldValue("secondPassword", event.currentTarget.value)
+              }
+              radius="md"
+              error={form.errors.secondPassword}
+            />
+          </div>
+          <TextInput
             required
-            label="Senha"
+            type="number"
+            label="Número de telefone"
             placeholder="Sua senha"
-            value={form.values.password}
+            value={form.values.contact}
             onChange={(event) =>
-              form.setFieldValue("password", event.currentTarget.value)
-            }
-            error={
-              form.errors.password &&
-              "Password should include at least 6 characters"
+              form.setFieldValue("contact", +event.currentTarget.value)
             }
             radius="md"
+            error={form.errors.contact}
           />
 
-          <PasswordInput
+          <TextInput
             required
-            label="Confirma a senha"
+            type="number"
+            label="Número de matricula"
             placeholder="Sua senha"
-            value={form.values.password}
+            value={form.values.registrationNumber}
             onChange={(event) =>
-              form.setFieldValue("password", event.currentTarget.value)
-            }
-            error={
-              form.errors.password &&
-              "Password should include at least 6 characters"
+              form.setFieldValue(
+                "registrationNumber",
+                +event.currentTarget.value
+              )
             }
             radius="md"
+            error={form.errors.registitionNumber}
           />
 
-          <DateInput
-            required
-            value={value}
-            onChange={setValue}
-            label="Data de nascimento"
-            placeholder="Digite sua data"
-          />
           <Select
-            mt="md"
             required
-            comboboxProps={{ withinPortal: true }}
-            data={["Masculino", "Femenino"]}
-            placeholder="Escolha o genero"
-            label="Selecione seu genero"
-            classNames={classes}
+            label="Selecione seu curso"
+            placeholder="Escolha um curso"
+            value={`${form.values.courseId}`}
+            className="self-start w-full"
+            onChange={(value) => form.setFieldValue("courseId", Number(value))}
+            data={allCourses}
+            withAsterisk
+            clearable
+            error={form.errors.courseId}
+            searchable
           />
 
-          <Checkbox
-            label="Você é estudante do ISPB"
-            checked={form.values.terms}
-            onChange={(event) =>
-              form.setFieldValue("terms", event.currentTarget.checked)
-            }
-          />
+          <Group justify="space-between" mt="xl">
+            <Link href="/signin">
+              <Anchor component="button" type="button" c="dimmed" size="xs">
+                Já tenho uma conta? Entrar
+              </Anchor>
+            </Link>
+            <Button type="submit" radius="xl">
+              Cadastrar
+            </Button>
+          </Group>
         </Stack>
-
-        <Group justify="space-between" mt="xl">
-          <Link href="/signin">
-            <Anchor
-              component="button"
-              type="button"
-              c="dimmed"
-              onClick={() => toggle()}
-              size="xs"
-            >
-              Já tenho uma conta? Entrar
-            </Anchor>
-          </Link>
-          <Button type="submit" radius="xl">
-            Cadastrar
-          </Button>
-        </Group>
       </form>
     </Paper>
   );
