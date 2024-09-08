@@ -1,6 +1,5 @@
 "use client";
 
-import { useToggle, upperFirst } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import {
@@ -10,40 +9,60 @@ import {
   Paper,
   Group,
   PaperProps,
-  Button,
   Divider,
-  Checkbox,
   Anchor,
   Stack,
-  Select,
 } from "@mantine/core";
-import classes from "./styles.module.css";
-import { useState } from "react";
 import Link from "next/link";
+import { zodResolver } from "mantine-form-zod-resolver";
+import { loginStudentSchema } from "@/schemas";
+import { TLoginStudentProps } from "@/@types";
+import { notifications } from "@mantine/notifications";
+import { useCreateAccount } from "@/hooks/useCreateAccount";
+import { signinStudent } from "@/server";
+import { ILoginResponse } from "@/interfaces";
+import CustomButton from "../CustomButton";
 
 export default function AuthSignin(props: PaperProps) {
-  const [type, toggle] = useToggle(["login", "register"]);
+  const { mutate, isPending } = useCreateAccount(
+    signinStudent,
+    showNotificationOnSuccess,
+    showNotificationOnError
+  );
   const router = useRouter();
   const form = useForm({
     initialValues: {
       email: "",
       password: "",
-      terms: true,
     },
 
-    validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
-      password: (val) =>
-        val.length <= 6
-          ? "Password should include at least 6 characters"
-          : null,
-    },
+    validate: zodResolver(loginStudentSchema),
   });
 
-  const handleSubmit = () => {
-    console.log("Everything is good.");
+  const handleSubmit = (values: TLoginStudentProps) => mutate(values);
+
+  function showNotificationOnSuccess(logged: ILoginResponse) {
+    localStorage.setItem("currentUser", JSON.stringify(logged.user));
+    localStorage.setItem("token", JSON.stringify(logged.token));
+    notifications.show({
+      title: "Fazer login",
+      message: "Login feito com sucesso.",
+      position: "top-right",
+      color: "blue",
+    });
     router.push("/dashboard");
-  };
+    form.reset();
+  }
+  function showNotificationOnError() {
+    notifications.show({
+      title: "Fazer login",
+      message: "Login não permitido verifique os dados e tente novamente.",
+      position: "top-right",
+      color: "red",
+    });
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
+  }
 
   return (
     <Paper
@@ -70,7 +89,7 @@ export default function AuthSignin(props: PaperProps) {
             onChange={(event) =>
               form.setFieldValue("email", event.currentTarget.value)
             }
-            error={form.errors.email && "Invalid email"}
+            error={form.errors.email}
             radius="md"
           />
 
@@ -82,10 +101,7 @@ export default function AuthSignin(props: PaperProps) {
             onChange={(event) =>
               form.setFieldValue("password", event.currentTarget.value)
             }
-            error={
-              form.errors.password &&
-              "Password should include at least 6 characters"
-            }
+            error={form.errors.password}
             radius="md"
           />
           <Link
@@ -98,19 +114,18 @@ export default function AuthSignin(props: PaperProps) {
 
         <Group justify="space-between" mt="xl">
           <Link href="/createAccount">
-            <Anchor
-              component="button"
-              type="button"
-              c="dimmed"
-              onClick={() => toggle()}
-              size="xs"
-            >
+            <Anchor component="button" type="button" c="dimmed" size="xs">
               Não tenho uma conta? Cadastrar
             </Anchor>
           </Link>
-          <Button type="submit" radius="xl">
-            Entrar
-          </Button>
+          <CustomButton
+            target="Entrar"
+            targetPedding="Entrando"
+            size="sm"
+            radius="lg"
+            type="submit"
+            isPending={isPending}
+          />
         </Group>
       </form>
     </Paper>

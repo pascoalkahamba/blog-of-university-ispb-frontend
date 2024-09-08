@@ -26,4 +26,11 @@ const createStudentSchema = zod.object({
   isStudent: zod.boolean(),
 });
 
-export { createStudentSchema };
+const loginStudentSchema = zod.object({
+  email: zod.string().email({ message: "Email invalido" }),
+  password: zod
+    .string()
+    .min(6, "Senha do usuário deve ter mais de seis caracteres."),
+});
+
+export { createStudentSchema, loginStudentSchema };

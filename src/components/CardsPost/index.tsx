@@ -1,34 +1,56 @@
-"use client";
+import { Button, Paper, rem, Text, Title } from "@mantine/core";
+import Link from "next/link";
+import classes from "@/components/CardsPost/styles.module.css";
+import { IDepartment, IPicture } from "@/interfaces";
 
-import { Container, Grid, SimpleGrid, rem } from "@mantine/core";
-import classes from "./styles.module.css";
-import { Card } from "../CardsCarousel";
-import { carouselData } from "@/mocks";
+interface CardPostProps {
+  id: number;
+  likes: number;
+  unlikes: number;
+  statusLike: boolean;
+  statusUnlike: boolean;
+  department: IDepartment;
+  picture: IPicture;
+  title: string;
+  height: string;
+}
 
-const PRIMARY_COL_HEIGHT = rem("200%");
-
-export default function CardsPost() {
-  const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
-
+export default function CardPost({
+  title,
+  picture,
+  id,
+  likes,
+  unlikes,
+  statusLike,
+  statusUnlike,
+  department,
+  height,
+}: CardPostProps) {
   return (
-    <Container my="xl" className={classes.container}>
-      <SimpleGrid
-        cols={{ base: 1, sm: 2 }}
-        spacing="md"
-        className={classes.cards}
+    <Paper
+      shadow="md"
+      p="xl"
+      radius="md"
+      style={{ backgroundImage: `url(${picture.url})`, height: rem(height) }}
+      className={`${classes.card} flex-grow flex-shrink basis-80 mb-4`}
+    >
+      <div>
+        <Text className={classes.category} size="xs">
+          Departamento de {department.name}
+        </Text>
+        <Title order={3} className={classes.title}>
+          {title}
+        </Title>
+      </div>
+      <Link
+        href={`post/${id}/${Math.abs(likes)}/${Math.abs(
+          unlikes
+        )}/${statusLike}/${statusUnlike}`}
       >
-        <Card {...carouselData[4]} height={SECONDARY_COL_HEIGHT} />
-        <Grid gutter="md">
-          <Card {...carouselData[3]} height={SECONDARY_COL_HEIGHT} />
-
-          <Grid.Col span={6}>
-            <Card {...carouselData[1]} height={SECONDARY_COL_HEIGHT} />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Card {...carouselData[2]} height={SECONDARY_COL_HEIGHT} />
-          </Grid.Col>
-        </Grid>
-      </SimpleGrid>
-    </Container>
+        <Button variant="white" color="dark">
+          Leia o artigo
+        </Button>
+      </Link>
+    </Paper>
   );
 }

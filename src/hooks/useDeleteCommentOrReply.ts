@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 // interface UserMutationPostProps {
 //   mutationFunction: (data: T) => Promise<K>;
@@ -7,22 +8,27 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 //  type a = Data["name"]
 function set<T, K extends keyof T>(obj: T, prop: K, value: T[K]) {}
 
-export function useCreateAccount<T, K>(
+export function useDeleteCommentOrReply<T, K>(
   mutationFunction: (value: T) => Promise<K>,
-  notificationOnSuccess: (value: K) => void,
+  notificationOnSuccess: () => void,
   notificationOnError: () => void,
   queryKey?: string
 ) {
   const queryClient = useQueryClient();
+  const route = useRouter();
+  // const userId = JSON.parse(localStorage.getItem("userId") as string) as number;
 
   const mutation = useMutation({
-    mutationFn: (value: T) => mutationFunction(value),
-    onSuccess: (logged) => {
+    mutationFn: (id: T) => mutationFunction(id),
+    onSuccess: () => {
+      notificationOnSuccess();
+      if (queryKey) {
+        route.replace("/signin");
+      }
       queryClient.refetchQueries();
-      notificationOnSuccess(logged);
     },
     onError: () => notificationOnError(),
   });
 
-  return { ...mutation };
+  return { mutation };
 }

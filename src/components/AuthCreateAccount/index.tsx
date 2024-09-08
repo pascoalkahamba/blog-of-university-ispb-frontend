@@ -25,11 +25,13 @@ import { TCreateAccountProps } from "@/@types";
 import { createStudentSchema } from "@/schemas";
 import useGetEverything from "@/hooks/useGetEverything";
 import { useMemo } from "react";
+import { ILoginResponse } from "@/interfaces";
+import CustomButton from "@/components/CustomButton";
 
 export default function AuthCreateAccount(props: PaperProps) {
   const router = useRouter();
   const { data: courses } = useGetEverything(getAllCourses, "allCourses");
-  const { mutation } = useCreateAccount(
+  const { mutate, isPending } = useCreateAccount(
     createdAccount,
     showNotificationOnSuccess,
     showNotificationOnError
@@ -37,8 +39,8 @@ export default function AuthCreateAccount(props: PaperProps) {
 
   function showNotificationOnSuccess() {
     notifications.show({
-      title: "Criação de cota",
-      message: "Post criado com sucesso.",
+      title: "Criação de conta",
+      message: "Sua conta foi criada com sucesso.",
       position: "top-right",
       color: "blue",
     });
@@ -47,7 +49,7 @@ export default function AuthCreateAccount(props: PaperProps) {
   }
   function showNotificationOnError() {
     notifications.show({
-      title: "Criação de cota",
+      title: "Criação de conta",
       message: "Algo deu errado verifique os dados e tente novamente.",
       position: "top-right",
       color: "red",
@@ -94,7 +96,7 @@ export default function AuthCreateAccount(props: PaperProps) {
       return;
     }
     console.log("values", values);
-    mutation.mutate({
+    mutate({
       contact,
       email,
       password: firstPassword,
@@ -169,7 +171,7 @@ export default function AuthCreateAccount(props: PaperProps) {
             required
             type="number"
             label="Número de telefone"
-            placeholder="Sua senha"
+            placeholder="Seu numero de telefone"
             value={form.values.contact}
             onChange={(event) =>
               form.setFieldValue("contact", +event.currentTarget.value)
@@ -182,7 +184,7 @@ export default function AuthCreateAccount(props: PaperProps) {
             required
             type="number"
             label="Número de matricula"
-            placeholder="Sua senha"
+            placeholder="Seu numero de matricula"
             value={form.values.registrationNumber}
             onChange={(event) =>
               form.setFieldValue(
@@ -214,9 +216,14 @@ export default function AuthCreateAccount(props: PaperProps) {
                 Já tenho uma conta? Entrar
               </Anchor>
             </Link>
-            <Button type="submit" radius="xl">
-              Cadastrar
-            </Button>
+            <CustomButton
+              size="sm"
+              radius="xl"
+              type="submit"
+              target="Cadastrar"
+              targetPedding="Cadastrando"
+              isPending={isPending}
+            />
           </Group>
         </Stack>
       </form>
