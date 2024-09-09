@@ -142,11 +142,7 @@ export interface IUser {
   contact: string;
 }
 
-export interface ICreatePost {
-  title: string;
-  departmentId: number | null;
-}
-
+ 
 export interface IFile {
   path: string;
   lastModified: number;
@@ -199,17 +195,8 @@ export interface ICreatedReplyData {
   whoCreator: TWhoPosted;
 }
 
-// export interface ICustomSession extends Session {
-//   accessToken: string;
-//   user: IUser;
-// }
-
-export interface ISignin {
-  email: string;
-  password: string;
-  terms: boolean;
-}
-
+ 
+ 
 export interface ICustomUpdateProfile {
   id: number;
   formdata: FormData;
@@ -238,11 +225,7 @@ export interface ILoginResponse {
   token: string;
 }
 
-// export interface  IUser extends IUser {
-//   username: string;
-//   profile: IProfile;
-// }
-
+ 
 export interface IDepartment {
   id: number;
   name: string;

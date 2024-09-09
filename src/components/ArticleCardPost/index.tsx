@@ -24,7 +24,11 @@ import SkeletonComponent from "@/components/Skeleton";
 import Image from "next/image";
 import CommentSimple from "@/components/CommentSimple";
 import TextareaComment from "@/components/TextariaComment";
-import { currentUserCanManagerfiles, messegeDate } from "@/utils/index";
+import {
+  creatorUser,
+  currentUserCanManagerfiles,
+  messegeDate,
+} from "@/utils/index";
 import ModalDemoDelete from "@/components/ModalDemoDelete";
 import { useAddLikeOrUnlike } from "@/hooks/useAddLikeOrUnlike";
 import useReactions from "@/hooks/useReactions";
@@ -108,7 +112,7 @@ export default function ArticleCardPost({
     currentUser,
   });
 
-  const whoCreator = !data.admin ? data.coordinator : data.admin;
+  const whoCreator = creatorUser(data.admin, data.coordinator, null);
   function handleAddLike() {
     addLike();
     mutationAddLike.mutate({

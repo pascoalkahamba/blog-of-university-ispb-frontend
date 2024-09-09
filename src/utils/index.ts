@@ -23,6 +23,16 @@ function showEspecialRoute(role: TRole) {
   return "routeNotFound";
 }
 
+function creatorUser(
+  admin: IUser | null,
+  coordinator: IUser | null,
+  student: IUser | null
+) {
+  if (admin) return admin;
+  if (coordinator) return coordinator;
+  if (student) return student;
+}
+
 function showRoleName(role: TRole) {
   if (role === "ADMIN") return "Administrador";
   if (role === "COORDINATOR") return "Cordenador";
@@ -84,6 +94,7 @@ export {
   extractTextFromHTML,
   messegeDate,
   MAXLENGTH,
+  creatorUser,
   lastData,
   showNameOfUser,
   showButtonSigniOut,

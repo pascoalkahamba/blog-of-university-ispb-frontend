@@ -5,6 +5,8 @@ import {
   ICommentDataResult,
   ICourse,
   ICreateAccountData,
+  ICreateCommentData,
+  ICreatedReplyData,
   ICustomUpdateProfile,
   IGetOneUser,
   ILoginResponse,
@@ -24,6 +26,41 @@ export async function createdAccount(studantData: ICreateAccountData) {
   const createdStudent = response.data;
 
   return createdStudent;
+}
+
+export async function createComment({
+  content,
+  postId,
+  whoCreator,
+}: ICreateCommentData) {
+  const response = await axios.post<ICommentDataResult>(
+    `/comment/create/${postId}`,
+    {
+      content,
+      whoCreator,
+    }
+  );
+
+  const commentCreated = response.data;
+
+  return commentCreated;
+}
+export async function createReply({
+  content,
+  commentId,
+  whoCreator,
+}: ICreatedReplyData) {
+  const response = await axios.post<IReplyDataResult>(
+    `/reply/create/${commentId}`,
+    {
+      content,
+      whoCreator,
+    }
+  );
+
+  const replyCreated = response.data;
+
+  return replyCreated;
 }
 
 export async function deleteComment(id: number) {
@@ -79,6 +116,14 @@ export async function addLikeReply({ id, like, statusLike }: IAddLike) {
 
   const replyLiked = response.data;
   return replyLiked;
+}
+
+export async function deleteUser({ id, role }: IGetOneUser) {
+  const whatRoute = showEspecialRoute(role);
+  const response = await axios.delete<IUser>(`/${whatRoute}/deleteUser/${id}`);
+  const deletedUser = response.data;
+
+  return deletedUser;
 }
 
 export async function getOnePost(id: number) {

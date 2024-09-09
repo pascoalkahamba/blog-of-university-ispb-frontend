@@ -10,6 +10,8 @@ import { useAtom, useAtomValue } from "jotai";
 import { commentAtom, editAtom, replyAtom } from "@/storage/atom";
 import { useEffect } from "react";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { IUser } from "@/interfaces";
+import { showEspecialRoute } from "@/utils";
 
 interface TextareaCommentProps {
   labelTarget: string;
@@ -49,10 +51,12 @@ export default function TextareaComment({
     "UpdateComment"
   );
 
+  const currentUser = JSON.parse(
+    localStorage.getItem("currentUser") as string
+  ) as IUser;
+
   const [edit, setEdit] = useAtom(editAtom);
-  const whoCreator = JSON.parse(
-    localStorage.getItem("whoCreator") as string
-  ) as TWhoPosted;
+  const whoCreator = showEspecialRoute(currentUser.role);
   const field = useField({
     initialValue: "",
     validate: (value) => (value.trim().length < 2 ? errorTarget : null),
@@ -141,9 +145,7 @@ export default function TextareaComment({
       />
       <div className={classNameButton}>
         <CustomButton
-          isDirty={true}
           isPending={mutation.isPending || mutationUpdateComment.isPending}
-          isValid={false}
           handleClick={handleClick}
           target={
             edit.status && edit.type === "comment"

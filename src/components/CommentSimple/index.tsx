@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import { ICommentDataResult, ISimpleUser, IUser } from "@/interfaces";
 import {
+  creatorUser,
   currentUserCanManagerfiles,
   messegeDate,
   showNameOfUser,
@@ -29,6 +30,7 @@ import TextareaReply from "@/components/TextariaReply";
 import { useAddLikeOrUnlike } from "@/hooks/useAddLikeOrUnlike";
 import { addLikeComment, addUnlikeComment } from "@/server";
 import useReactions from "@/hooks/useReactions";
+import Link from "next/link";
 
 export default function CommentSimple({
   id,
@@ -53,13 +55,7 @@ export default function CommentSimple({
     statusUnlike,
   });
   const theme = useMantineTheme();
-  const user = (
-    !showNameOfUser(admin)
-      ? !showNameOfUser(coordinator)
-        ? showNameOfUser(student)
-        : showNameOfUser(coordinator)
-      : showNameOfUser(admin)
-  ) as ISimpleUser;
+  const thisUserCreator = creatorUser(admin, coordinator, student);
 
   const currentUser = JSON.parse(
     localStorage.getItem("currentUser") as string
@@ -95,21 +91,27 @@ export default function CommentSimple({
     <div className="w-full">
       <div className="w-full flex justify-between items-center">
         <Group className="w-full flex gap-3 items-center">
-          <Avatar
-            src={
-              user.photoUrl
-                ? user.photoUrl
-                : "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-            }
-            alt={user.username}
-            radius="xl"
-            className="block"
-          />
+          <Link
+            href={`/profile/${thisUserCreator?.id}/${thisUserCreator?.role}`}
+            replace
+          >
+            <Avatar
+              src={thisUserCreator?.profile.photo.url}
+              alt={thisUserCreator?.username}
+              radius="xl"
+              className="block"
+            />
+          </Link>
           <div>
-            <Text size="sm">{user.username}</Text>
-            <Text size="xs" c="dimmed">
-              comentado {dateResult}
-            </Text>
+            <Link
+              href={`/profile/${thisUserCreator?.id}/${thisUserCreator?.role}`}
+              replace
+            >
+              <Text size="sm">{thisUserCreator?.username}</Text>
+              <Text size="xs" c="dimmed">
+                comentado {dateResult}
+              </Text>
+            </Link>
           </div>
         </Group>
 

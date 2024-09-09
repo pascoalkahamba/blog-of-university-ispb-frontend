@@ -7,7 +7,7 @@ export type HandleChangePostProps =
   | undefined;
 export type TCreateAccountProps = zod.infer<typeof createStudentSchema>;
 export type TLoginStudentProps = zod.infer<typeof loginStudentSchema>;
-export type TWhoPosted = "admin" | "coordinator" | "student";
+export type TWhoPosted = "admin" | "coordinator" | "student" | "routeNotFound";
 export type TTypeInput = "title" | "departament";
 export type TRole = "USER" | "ADMIN" | "COORDINATOR";
 export type TEventType = "comment" | "reply" | "nothing";

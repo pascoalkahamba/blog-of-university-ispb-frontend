@@ -160,9 +160,9 @@ export function UserInfoProfile({ id, role }: UserInfoProfileProps) {
               size="1rem"
               className={classes.icon}
             />
-            <Text c="dimmed" fz="sm">
+            {/* <Text c="dimmed" fz="sm">
               Departamento: {data.department.name}
-            </Text>
+            </Text> */}
           </Group>
         )}
         {showDepartmentAndCourse && (

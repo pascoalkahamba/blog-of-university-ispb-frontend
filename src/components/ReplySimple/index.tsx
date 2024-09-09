@@ -16,6 +16,7 @@ import {
 } from "@tabler/icons-react";
 import { IReplyDataResult, ISimpleUser, IUser } from "@/interfaces";
 import {
+  creatorUser,
   currentUserCanManagerfiles,
   messegeDate,
   showNameOfUser,
@@ -23,6 +24,7 @@ import {
 import { useAddLikeOrUnlike } from "@/hooks/useAddLikeOrUnlike";
 import { addLikeReply, addUnlikeReply } from "@/server";
 import useReactions from "@/hooks/useReactions";
+import Link from "next/link";
 
 export default function ReplySimple({
   admin,
@@ -75,13 +77,7 @@ export default function ReplySimple({
     });
   }
 
-  const user = (
-    !showNameOfUser(admin)
-      ? !showNameOfUser(coordinator)
-        ? showNameOfUser(student)
-        : showNameOfUser(coordinator)
-      : showNameOfUser(admin)
-  ) as ISimpleUser;
+  const thisUserCreator = creatorUser(admin, coordinator, student);
 
   const { dateResult } = messegeDate(new Date(createdAt), new Date());
 
@@ -91,20 +87,26 @@ export default function ReplySimple({
       <div>
         <div className=" flex justify-between items-center">
           <Group>
-            <Avatar
-              src={
-                user.photoUrl
-                  ? user.photoUrl
-                  : "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-              }
-              alt={user.username}
-              radius="xl"
-            />
+            <Link
+              href={`/profile/${thisUserCreator?.id}/${thisUserCreator?.role}`}
+              replace
+            >
+              <Avatar
+                src={thisUserCreator?.profile.photo.url}
+                alt={thisUserCreator?.username}
+                radius="xl"
+              />
+            </Link>
             <div>
-              <Text size="sm">{user.username}</Text>
-              <Text size="xs" c="dimmed">
-                respondido {dateResult}
-              </Text>
+              <Link
+                href={`/profile/${thisUserCreator?.id}/${thisUserCreator?.role}`}
+                replace
+              >
+                <Text size="sm">{thisUserCreator?.username}</Text>
+                <Text size="xs" c="dimmed">
+                  respondido {dateResult}
+                </Text>
+              </Link>
             </div>
           </Group>
           {isThisUserCanManagerFiles && (
