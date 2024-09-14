@@ -136,13 +136,14 @@ export interface IUser {
   username: string;
   course: ICourse;
   email: string;
+  department: IDepartment;
+  departmentId: number;
   profile: IProfile;
   role: TRole;
   registrationNumber: string;
   contact: string;
 }
 
- 
 export interface IFile {
   path: string;
   lastModified: number;
@@ -195,8 +196,6 @@ export interface ICreatedReplyData {
   whoCreator: TWhoPosted;
 }
 
- 
- 
 export interface ICustomUpdateProfile {
   id: number;
   formdata: FormData;
@@ -225,7 +224,6 @@ export interface ILoginResponse {
   token: string;
 }
 
- 
 export interface IDepartment {
   id: number;
   name: string;
@@ -337,6 +335,7 @@ export interface ICourse {
   name: string;
   studentId: number | null;
   departmentId: number;
+  department: IDepartment;
   coordinatorId: number | null;
   subjects: ISubjects[];
 }

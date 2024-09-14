@@ -1,20 +1,16 @@
 "use client";
-import { carouselData } from "@/mocks";
 import CardPost from "@/components/CardsPost";
-import { IUser } from "@/interfaces";
-import useGetEverything from "@/hooks/useGetEverything";
 import { getAllPost } from "@/server";
 import SkeletonComponent from "@/components/Skeleton";
+import useQueryPost from "@/hooks/useQueryPost";
+import { useAtomValue } from "jotai";
+import { departmentIdAtom } from "@/storage/atom";
 
 export default function DashboardChild() {
-  const currentUser = JSON.parse(
-    localStorage.getItem("currentUser") as string
-  ) as IUser;
+  const departmentId = useAtomValue(departmentIdAtom);
   const {
-    data: allPosts,
-    error,
-    isPending,
-  } = useGetEverything(getAllPost, `allPosts${currentUser.id}`, null);
+    query: { isPending, error, data: allPosts },
+  } = useQueryPost(getAllPost, "allPosts", departmentId);
 
   if (isPending)
     return (

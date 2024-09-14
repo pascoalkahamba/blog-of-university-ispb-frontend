@@ -3,5 +3,5 @@ interface ProfileLayoutProps {
 }
 
 export default function ProfileLayout({ children }: ProfileLayoutProps) {
-  return <section className="p-2">{children}</section>;
+  return <section className="pt-20 p-3">{children}</section>;
 }

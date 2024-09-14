@@ -27,6 +27,7 @@ import { updateProfileSchema } from "@/schemas";
 import { useDisclosure } from "@mantine/hooks";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
 import {
+  getAllCourses,
   getAllCoursesFromDepartment,
   getAllDepartments,
   updateUserProfile,
@@ -37,6 +38,7 @@ import { notifications } from "@mantine/notifications";
 import { showRoleName } from "@/utils";
 import useQueryPost from "@/hooks/useQueryPost";
 import { useMemo } from "react";
+import useGetEverything from "@/hooks/useGetEverything";
 
 interface ModalDemoProps {
   targetButton: string;
@@ -59,14 +61,14 @@ export default function ModalEditUserProfile({
   } = useQueryPost(getAllDepartments, "allDepartments", null);
   const currentFile = useAtomValue(selectFileAtom);
 
-  const { role, username, contact, course, department, email, id, profile } =
+  const { role, username, contact, course, departmentId, email, id, profile } =
     user;
   const formdata = new FormData();
   const form = useForm({
     initialValues: {
       email,
       username,
-      departmentId: department?.id ?? 0,
+      departmentId: departmentId ?? 0,
       courseId: course?.id ?? 0,
       contact,
       password: "",
@@ -103,6 +105,8 @@ export default function ModalEditUserProfile({
     form.values.departmentId
   );
 
+  const { data: globalCourses } = useGetEverything(getAllCourses, "allCourses");
+
   const allDepartments = useMemo(() => {
     return departments?.map(({ id, name }) => ({
       value: `${id}`,
@@ -116,6 +120,14 @@ export default function ModalEditUserProfile({
       label: name,
     }));
   }, [courses]);
+  const wholeCourses = useMemo(() => {
+    return globalCourses?.map(({ id, name }) => ({
+      value: `${id}`,
+      label: name,
+    }));
+  }, [globalCourses]);
+
+  console.log("courses", wholeCourses);
 
   function handleEditProfile(values: IUpdateUserProfile) {
     formdata.append("username", values.username);
@@ -130,7 +142,13 @@ export default function ModalEditUserProfile({
       formdata.append("courseId", `${values.courseId}`);
     }
 
-    mutation.mutate({ formdata, id, role });
+    if (role === "USER") {
+      formdata.append("courseId", `${values.courseId}`);
+    }
+
+    console.log("formdata", formdata);
+
+    mutation.mutate({ formdata, role, id });
   }
 
   function onCancelFn() {
@@ -202,23 +220,24 @@ export default function ModalEditUserProfile({
                 radius="md"
               />
 
-              {role === "COORDINATOR" && (
-                <Select
-                  required
-                  label="Escolha um novo curso"
-                  placeholder="Escolha um curso"
-                  value={`${form.values.courseId}`}
-                  onChange={(value) => {
-                    if (value) form.setFieldValue("courseId", +value);
-                  }}
-                  error={form.errors.courseId}
-                  className="self-start w-full"
-                  data={allCourses}
-                  withAsterisk
-                  clearable
-                  searchable
-                />
-              )}
+              {role === "COORDINATOR" ||
+                (role === "USER" && (
+                  <Select
+                    required
+                    label="Escolha um novo curso"
+                    placeholder="Escolha um curso"
+                    value={`${form.values.courseId}`}
+                    onChange={(value) => {
+                      if (value) form.setFieldValue("courseId", +value);
+                    }}
+                    error={form.errors.courseId}
+                    className="self-start w-full"
+                    data={role === "USER" ? wholeCourses : allCourses}
+                    withAsterisk
+                    clearable
+                    searchable
+                  />
+                ))}
 
               <PasswordInput
                 required

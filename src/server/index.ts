@@ -8,6 +8,7 @@ import {
   ICreateCommentData,
   ICreatedReplyData,
   ICustomUpdateProfile,
+  IDepartmentData,
   IGetOneUser,
   ILoginResponse,
   IPost,
@@ -26,6 +27,23 @@ export async function createdAccount(studantData: ICreateAccountData) {
   const createdStudent = response.data;
 
   return createdStudent;
+}
+
+export async function getAllDepartments() {
+  const response = await axios<IDepartmentData[]>(
+    "/department/getAllDepartments"
+  );
+  const allDepartments = response.data;
+
+  return allDepartments;
+}
+export async function getAllCoursesFromDepartment(id: number | null) {
+  const response = await axios<ICourse[]>(
+    `/department/getAllCoursesFromDepartment/${id}`
+  );
+  const allCourses = response.data;
+
+  return allCourses;
 }
 
 export async function createComment({

@@ -16,10 +16,9 @@ import {
   IconHeart,
   IconMessage,
   IconPhoneCall,
-  IconUser,
   IconCircleLetterDFilled,
   IconCirclesFilled,
-  IconAdjustments,
+  IconPlaystationCircle,
   IconCertificate,
   IconStar,
 } from "@tabler/icons-react";
@@ -30,10 +29,8 @@ import { deleteUser, getOneUser } from "@/server";
 import { TRole } from "@/@types";
 import SkeletonComponent from "@/components/Skeleton";
 import {
-  currentUserCanManagerfiles,
   currentUserCanManagerProfile,
   showButtonSigniOut,
-  showNameOfUser,
   showRoleName,
 } from "@/utils";
 import ModalEditUserProfile from "@/components/ModalEditUserProfile";
@@ -160,16 +157,29 @@ export function UserInfoProfile({ id, role }: UserInfoProfileProps) {
               size="1rem"
               className={classes.icon}
             />
-            {/* <Text c="dimmed" fz="sm">
-              Departamento: {data.department.name}
-            </Text> */}
+            <Text c="dimmed" fz="sm">
+              Departamento: {data.course.department.name}
+            </Text>
+          </Group>
+        )}
+        {data.role === "USER" && (
+          <Group wrap="nowrap" gap={1}>
+            <IconPlaystationCircle
+              stroke={2}
+              size="1rem"
+              className={classes.icon}
+            />
+            <Text c="dimmed" fz="sm">
+              Número de matricula: {data.registrationNumber}
+            </Text>
           </Group>
         )}
         {showDepartmentAndCourse && (
           <Group wrap="nowrap" gap={1}>
             <IconCertificate stroke={2} size="1rem" className={classes.icon} />
             <Text c="dimmed" fz="sm">
-              Sou cordenador do curso de {data.course?.name}
+              Sou {data.role === "COORDINATOR" ? "cordenador" : "estudante"} do
+              curso de {data.course?.name}
             </Text>
           </Group>
         )}
