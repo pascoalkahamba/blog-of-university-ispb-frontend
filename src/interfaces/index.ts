@@ -68,6 +68,9 @@ export interface IReplyDataResult {
 export interface IDepartment {
   id: number;
   name: string;
+  coordinators: IUser[];
+  courses: ICourse[];
+  posts: IPost[];
 }
 
 export interface IPost {

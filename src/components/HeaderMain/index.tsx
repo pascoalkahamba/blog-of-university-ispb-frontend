@@ -13,6 +13,7 @@ import {
   rem,
   useMantineTheme,
   Autocomplete,
+  Center,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -39,7 +40,7 @@ import {
 } from "@/server";
 import { notifications } from "@mantine/notifications";
 import { showRoleName } from "@/utils";
-import ModalDemoDelete from "../ModalDemoDelete";
+import ModalDemoDelete from "@/components/ModalDemoDelete";
 import useQueryUser from "@/hooks/useQueryUser";
 import useQueryPost from "@/hooks/useQueryPost";
 import { departmentIdAtom } from "@/storage/atom";
@@ -59,6 +60,49 @@ export default function HeaderMain() {
     query: { data: departments },
   } = useQueryPost(getAllDepartments, "allDepartments", null);
 
+  const allDepartments = departments?.map((department) => {
+    const menuCourses = department.courses?.map((course) => (
+      <Menu.Item
+        key={course.id}
+        component="a"
+        target="_blank"
+        href="/curriculo-frontend-kahamba.pt.pdf"
+        download="curriculo-frontend-kahamba"
+      >
+        {course.name}
+      </Menu.Item>
+    ));
+
+    return (
+      <Tabs.Tab key={department.name} value={department.name}>
+        <Menu transitionProps={{ exitDuration: 0 }} withinPortal>
+          <Menu.Target>
+            <a
+              href={department.name}
+              className={classes.link}
+              onClick={(event) => {
+                event.preventDefault();
+                setDepartmentId(department.id);
+              }}
+            >
+              <Center>
+                <span className={classes.linkLabel}>{department.name}</span>
+                <IconChevronDown size="0.9rem" stroke={1.5} />
+              </Center>
+            </a>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Link href={`/department/${department.id}`} replace>
+              <Menu.Item value={department.name}>
+                Saber mais sobre o departamento
+              </Menu.Item>
+            </Link>
+            {menuCourses}
+          </Menu.Dropdown>
+        </Menu>
+      </Tabs.Tab>
+    );
+  });
   const user = JSON.parse(
     localStorage.getItem("currentUser") as string
   ) as IUser;
@@ -76,11 +120,8 @@ export default function HeaderMain() {
     showNotificationOnError,
     `deleteUser-${role}-${id}`
   );
-  const allDepartments = departments?.map(({ id, name }) => (
-    <Tabs.Tab value={name} key={id} onClick={() => setDepartmentId(id)}>
-      {name}
-    </Tabs.Tab>
-  ));
+
+  console.log("allDepartments", departments);
 
   function showNotificationOnSuccess() {
     notifications.show({

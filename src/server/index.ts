@@ -188,6 +188,15 @@ export async function getOneUser({ id, role }: IGetOneUser) {
   return user;
 }
 
+export async function getOneDepartment(id?: number | null) {
+  const response = await axios<IDepartmentData>(
+    `/department/getOneDepartment/${id}`
+  );
+  const department = response.data;
+
+  return department;
+}
+
 export async function updateUserProfile({
   formdata,
   role,
