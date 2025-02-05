@@ -1,4 +1,9 @@
-import { createStudentSchema, loginStudentSchema } from "@/schemas";
+import {
+  createStudentSchema,
+  forgotPasswordSchema,
+  loginStudentSchema,
+  verificationCodeSchema,
+} from "@/schemas";
 import { FormEventHandler } from "react";
 import { z as zod } from "zod";
 
@@ -7,8 +12,10 @@ export type HandleChangePostProps =
   | undefined;
 export type TCreateAccountProps = zod.infer<typeof createStudentSchema>;
 export type TLoginStudentProps = zod.infer<typeof loginStudentSchema>;
+export type TVerificationCodeProps = zod.infer<typeof verificationCodeSchema>;
 export type TWhoPosted = "admin" | "coordinator" | "student" | "routeNotFound";
 export type TTypeInput = "title" | "departament";
+export type TForgotPassword = zod.infer<typeof forgotPasswordSchema>;
 export type TOperation = "resetPassword" | "deleteAccount";
 export type TRole = "USER" | "ADMIN" | "COORDINATOR";
 export type TEventType = "comment" | "reply" | "nothing";

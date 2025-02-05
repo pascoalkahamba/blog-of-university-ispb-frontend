@@ -60,4 +60,25 @@ const loginStudentSchema = zod.object({
     .min(6, "Senha do usuário deve ter mais de seis caracteres."),
 });
 
-export { createStudentSchema, loginStudentSchema, updateProfileSchema };
+const forgotPasswordSchema = zod.object({
+  email: zod.string().email({ message: "Email invalido" }),
+  password: zod
+    .string()
+    .min(6, { message: "Senha deve ter mais de 6 caracteres." })
+    .optional(),
+});
+
+const verificationCodeSchema = zod.object({
+  email: zod.string().email({ message: "email invalido" }),
+  code: zod
+    .string()
+    .min(6, { message: "Código deve ter mais de 6 caracteres." }),
+});
+
+export {
+  createStudentSchema,
+  loginStudentSchema,
+  updateProfileSchema,
+  forgotPasswordSchema,
+  verificationCodeSchema,
+};

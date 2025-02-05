@@ -7,7 +7,6 @@ import {
   useMantineTheme,
   rem,
   Group,
-  Skeleton,
 } from "@mantine/core";
 import classes from "@/components/UserInfoProfile/styles.module.css";
 import { useRouter } from "next/navigation";
@@ -62,6 +61,7 @@ export function UserInfoProfile({ id, role }: UserInfoProfileProps) {
   });
 
   console.log("profile", data);
+  console.log("role and id", id, role);
 
   function showNotificationOnSuccess() {
     notifications.show({

@@ -13,8 +13,10 @@ const departmentSelectIdAtom = atom<number | null>(null);
 const fetchErrorAtom = atom(false);
 const fetchDoneAtom = atom(false);
 const errorAtom = atom(false);
-const whoCreatorAtom = atom<TWhoPosted>("admin");
+const whoCreatorAtom = atom<TWhoPosted>("student");
 const selectFileAtom = atom<FileWithPath | string>("");
+const showModalVerificationCodeAtom = atom(false);
+const codeSentFromEmailAcceptAtom = atom(false);
 
 export {
   dropzoneAtom,
@@ -22,6 +24,8 @@ export {
   errorAtom,
   whoCreatorAtom,
   titleAtom,
+  codeSentFromEmailAcceptAtom,
+  showModalVerificationCodeAtom,
   contentAtom,
   editAtom,
   departmentIdAtom,

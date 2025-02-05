@@ -1,4 +1,4 @@
-import { TEventType, TWhoPosted, TRole } from "@/@types";
+import { TEventType, TWhoPosted, TRole, TOperation } from "@/@types";
 
 export interface ICreateAccount {
   username: string;
@@ -155,6 +155,32 @@ export interface IFile {
   size: number;
   type: string;
   webkitRelativePath: string;
+}
+
+export interface IRequestVerificationCode {
+  email: string;
+  operation: TOperation;
+}
+
+export interface IVerificationCodeResult {
+  message: string;
+  code: string;
+}
+
+export interface IForgotPassword {
+  email: string;
+  password: string;
+  whoUser: TWhoPosted;
+}
+
+export interface IVerifyCodeAndProceed {
+  email: string;
+  operation: TOperation;
+  code: string;
+}
+
+export interface IVerifyCodeAndProceedResult {
+  message: string;
 }
 
 export interface ICommentDataResult {

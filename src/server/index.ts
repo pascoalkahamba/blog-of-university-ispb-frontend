@@ -9,13 +9,18 @@ import {
   ICreatedReplyData,
   ICustomUpdateProfile,
   IDepartmentData,
+  IForgotPassword,
   IGetOneUser,
   ILoginResponse,
   IPost,
   IReplyDataResult,
+  IRequestVerificationCode,
   ISignin,
   IStudentData,
   IUser,
+  IVerificationCodeResult,
+  IVerifyCodeAndProceed,
+  IVerifyCodeAndProceedResult,
 } from "@/interfaces";
 import { showEspecialRoute } from "@/utils";
 
@@ -186,6 +191,56 @@ export async function getOneUser({ id, role }: IGetOneUser) {
   const user = response.data;
 
   return user;
+}
+
+export async function requestVerificationCode({
+  email,
+  operation,
+}: IRequestVerificationCode) {
+  const response = await axios.post<IVerificationCodeResult>(
+    "verificationCode/requestVerificationCode",
+    {
+      email,
+      operation,
+    }
+  );
+
+  const messageAndCode = response.data;
+
+  return messageAndCode;
+}
+
+export async function forgotPassword({
+  email,
+  password,
+  whoUser,
+}: IForgotPassword) {
+  const response = await axios.post<IUser>(`${whoUser}/forgotPassword`, {
+    email,
+    password,
+  });
+  const userPasswordUpdated = response.data;
+
+  return userPasswordUpdated;
+}
+
+export async function verifyCodeAndProceed({
+  code,
+  email,
+  operation,
+}: IVerifyCodeAndProceed) {
+  const response = await axios.post<IVerifyCodeAndProceedResult>(
+    "verificationCode/verifyCodeAndProceed",
+    {
+      email,
+      operation,
+      code,
+    }
+  );
+
+  const messageAccepet = response.data;
+
+  return messageAccepet;
 }
 
 export async function getOneDepartment(id?: number | null) {

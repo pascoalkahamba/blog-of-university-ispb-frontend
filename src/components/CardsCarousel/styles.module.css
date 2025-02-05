@@ -7,6 +7,10 @@
   background-position: center;
 }
 
+.custom-indicators {
+  background-color: aqua;
+}
+
 .title {
   font-family: Greycliff CF, sans-serif;
   font-weight: 900;

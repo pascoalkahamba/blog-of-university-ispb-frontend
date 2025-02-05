@@ -6,7 +6,7 @@ export function AuthFooter() {
     <div className={classes.footer}>
       <Container className={classes.inner}>
         <p className="italic">
-          Universidade ISPB - © Todos os direitos reservados
+          Salão de beleza Nankova em Benguela - © Todos os direitos reservados
         </p>
       </Container>
     </div>

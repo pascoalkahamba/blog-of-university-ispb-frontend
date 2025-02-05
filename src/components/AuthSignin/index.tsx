@@ -76,7 +76,11 @@ export default function AuthSignin(props: PaperProps) {
         Fazer Login
       </Text>
 
-      <Divider label="Blog do ISPB" labelPosition="center" my="lg" />
+      <Divider
+        label="Vitrine da Universidade ISPB"
+        labelPosition="center"
+        my="lg"
+      />
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>

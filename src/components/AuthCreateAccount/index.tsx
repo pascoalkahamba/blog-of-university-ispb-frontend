@@ -113,7 +113,11 @@ export default function AuthCreateAccount(props: PaperProps) {
         Criar Conta
       </Text>
 
-      <Divider label="Blog do ISPB" labelPosition="center" my="lg" />
+      <Divider
+        label="Vitrine da Universidade ISPB"
+        labelPosition="center"
+        my="lg"
+      />
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
@@ -198,7 +202,7 @@ export default function AuthCreateAccount(props: PaperProps) {
 
           <Select
             required
-            label="Selecione seu curso"
+            label="Selecione serviço desejado"
             placeholder="Escolha um curso"
             value={`${form.values.courseId}`}
             className="self-start w-full"

@@ -1,19 +1,11 @@
-import { TRole } from "@/@types";
+"use client";
+
 import {
-  ActionIcon,
-  Menu,
-  rem,
   PasswordInput,
   Paper,
-  Group,
-  PaperProps,
   Button,
-  Divider,
-  Checkbox,
-  Anchor,
   Stack,
   Modal,
-  Text,
   TextInput,
   useMantineTheme,
   Textarea,
@@ -39,6 +31,7 @@ import { showRoleName } from "@/utils";
 import useQueryPost from "@/hooks/useQueryPost";
 import { useMemo } from "react";
 import useGetEverything from "@/hooks/useGetEverything";
+import CustomButton from "../CustomButton";
 
 interface ModalDemoProps {
   targetButton: string;
@@ -115,11 +108,16 @@ export default function ModalEditUserProfile({
   }, [departments]);
 
   const allCourses = useMemo(() => {
-    return courses?.map(({ id, name }) => ({
-      value: `${id}`,
-      label: name,
-    }));
+    return (
+      courses
+        ?.filter((course) => !course.coordinatorId)
+        .map(({ id, name }) => ({
+          value: `${id}`,
+          label: name,
+        })) || []
+    );
   }, [courses]);
+
   const wholeCourses = useMemo(() => {
     return globalCourses?.map(({ id, name }) => ({
       value: `${id}`,
@@ -128,6 +126,7 @@ export default function ModalEditUserProfile({
   }, [globalCourses]);
 
   console.log("courses", wholeCourses);
+  console.log("allCourses", allCourses);
 
   function handleEditProfile(values: IUpdateUserProfile) {
     formdata.append("username", values.username);
@@ -269,9 +268,13 @@ export default function ModalEditUserProfile({
                 <Button onClick={onCancelFn} variant="outline">
                   Cancelar
                 </Button>
-                <Button variant="gradient" type="submit">
-                  Salvar
-                </Button>
+                <CustomButton
+                  target="Salvar"
+                  targetPedding="Salvando"
+                  size="sm"
+                  type="submit"
+                  isPending={mutation.isPending}
+                />
               </div>
             </Stack>
           </form>
