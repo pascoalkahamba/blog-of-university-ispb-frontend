@@ -19,6 +19,7 @@ import {
   IStudentData,
   IUser,
   IVerificationCodeResult,
+  IVerificationCodeStudent,
   IVerifyCodeAndProceed,
   IVerifyCodeAndProceedResult,
 } from "@/interfaces";
@@ -31,9 +32,18 @@ export async function createdAccount(studantData: ICreateAccountData) {
 
   const createdStudent = response.data;
 
+  console.log("createAccount", createdStudent);
   return createdStudent;
 }
 
+export async function getAllCodeStudent() {
+  const response = await axios.get<IVerificationCodeStudent[]>(
+    "/verificationCodeStudent/getAllCodeStudent"
+  );
+  const allCodeStudent = response.data;
+
+  return allCodeStudent;
+}
 export async function getAllDepartments() {
   const response = await axios<IDepartmentData[]>(
     "/department/getAllDepartments"

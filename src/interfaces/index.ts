@@ -167,6 +167,12 @@ export interface IVerificationCodeResult {
   code: string;
 }
 
+export interface IVerificationCodeStudent {
+  id: string;
+  createdAt: string;
+  code: string;
+}
+
 export interface IForgotPassword {
   email: string;
   password: string;

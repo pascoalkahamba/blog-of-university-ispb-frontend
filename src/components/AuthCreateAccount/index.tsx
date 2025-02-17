@@ -20,7 +20,7 @@ import classes from "./styles.module.css";
 import { zodResolver } from "mantine-form-zod-resolver";
 import Link from "next/link";
 import { useCreateAccount } from "@/hooks/useCreateAccount";
-import { createdAccount, getAllCourses } from "@/server";
+import { createdAccount, getAllCodeStudent, getAllCourses } from "@/server";
 import { TCreateAccountProps } from "@/@types";
 import { createStudentSchema } from "@/schemas";
 import useGetEverything from "@/hooks/useGetEverything";
@@ -31,7 +31,16 @@ import CustomButton from "@/components/CustomButton";
 export default function AuthCreateAccount(props: PaperProps) {
   const router = useRouter();
   const { data: courses } = useGetEverything(getAllCourses, "allCourses");
-  const { mutate, isPending } = useCreateAccount(
+  const { data: allCodeStudent } = useGetEverything(
+    getAllCodeStudent,
+    "alllCodeStudent"
+  );
+  const {
+    mutate,
+    isPending,
+    data: createAccount,
+    error,
+  } = useCreateAccount(
     createdAccount,
     showNotificationOnSuccess,
     showNotificationOnError
@@ -95,7 +104,20 @@ export default function AuthCreateAccount(props: PaperProps) {
       });
       return;
     }
-    console.log("values", values);
+
+    if (!codeStudentExist(registrationNumber.toString())) {
+      form.setFieldError(
+        "registrationNumber",
+        "O código de matricula não existe."
+      );
+      notifications.show({
+        title: "Criação de conta",
+        message: "O código de matricula não existe.",
+        color: "red",
+        position: "top-right",
+      });
+      return;
+    }
     mutate({
       contact,
       email,
@@ -106,6 +128,10 @@ export default function AuthCreateAccount(props: PaperProps) {
       registrationNumber,
     });
   }
+
+  const codeStudentExist = (codeStudent: string) => {
+    return allCodeStudent?.some((code) => code.code === codeStudent);
+  };
 
   return (
     <Paper radius="md" p="xl" withBorder {...props} className=" w-[35%]">
