@@ -112,7 +112,7 @@ export default function AuthCreateAccount(props: PaperProps) {
     if (!codeStudentExist(registrationNumber.toString())) {
       form.setFieldError(
         "registrationNumber",
-        "O código de matricula não existe."
+        "O número de matricula não existe."
       );
       notifications.show({
         title: "Criação de conta",
