@@ -173,6 +173,16 @@ export interface IVerificationCodeStudent {
   code: string;
 }
 
+export interface ICreateCodeStudent {
+  email: string;
+  code: string;
+}
+
+export interface IUpdateCodeStudent {
+  id: number;
+  codeForStudent: string;
+}
+
 export interface IForgotPassword {
   email: string;
   password: string;

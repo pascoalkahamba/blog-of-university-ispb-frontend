@@ -27,13 +27,14 @@ import useGetEverything from "@/hooks/useGetEverything";
 import { useMemo } from "react";
 import { ILoginResponse } from "@/interfaces";
 import CustomButton from "@/components/CustomButton";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AuthCreateAccount(props: PaperProps) {
   const router = useRouter();
   const { data: courses } = useGetEverything(getAllCourses, "allCourses");
   const { data: allCodeStudent } = useGetEverything(
     getAllCodeStudent,
-    "alllCodeStudent"
+    "allRegistrations"
   );
   const {
     mutate,
@@ -46,7 +47,10 @@ export default function AuthCreateAccount(props: PaperProps) {
     showNotificationOnError
   );
 
+  const queryClient = useQueryClient();
+
   function showNotificationOnSuccess() {
+    queryClient.invalidateQueries({ queryKey: ["allRegistrations"] });
     notifications.show({
       title: "Criação de conta",
       message: "Sua conta foi criada com sucesso.",

@@ -5,6 +5,7 @@ import {
   ICommentDataResult,
   ICourse,
   ICreateAccountData,
+  ICreateCodeStudent,
   ICreateCommentData,
   ICreatedReplyData,
   ICustomUpdateProfile,
@@ -17,6 +18,7 @@ import {
   IRequestVerificationCode,
   ISignin,
   IStudentData,
+  IUpdateCodeStudent,
   IUser,
   IVerificationCodeResult,
   IVerificationCodeStudent,
@@ -44,6 +46,49 @@ export async function getAllCodeStudent() {
 
   return allCodeStudent;
 }
+
+export async function getOneCodeStudent(id: number) {
+  const response = await axios<IVerificationCodeStudent>(
+    `/verificationCodeStudent/getCodeStudent/${id}`
+  );
+  const oneCodeStudent = response.data;
+  return oneCodeStudent;
+}
+
+export async function deleteCodeStudent(id: number) {
+  const response = await axios.delete<IVerificationCodeStudent>(
+    `/verificationCodeStudent/deleteCodeStudent/${id}`
+  );
+  const deletedCodeStudent = response.data;
+  return deletedCodeStudent;
+}
+
+export async function createCodeStudent({ code, email }: ICreateCodeStudent) {
+  const response = await axios.post<IVerificationCodeStudent>(
+    "/verificationCodeStudent/addCodeStudent",
+    {
+      code,
+      email,
+    }
+  );
+  const createdCodeStudent = response.data;
+  return createdCodeStudent;
+}
+
+export async function updateCodeStudent({
+  codeForStudent,
+  id,
+}: IUpdateCodeStudent) {
+  const response = await axios.post<IVerificationCodeStudent>(
+    `/verificationCodeStudent/updateCodeStudent/${id}`,
+    {
+      codeForStudent,
+    }
+  );
+  const updatedCodeStudent = response.data;
+  return updatedCodeStudent;
+}
+
 export async function getAllDepartments() {
   const response = await axios<IDepartmentData[]>(
     "/department/getAllDepartments"
