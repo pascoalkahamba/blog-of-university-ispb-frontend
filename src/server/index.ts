@@ -40,7 +40,7 @@ export async function createdAccount(studantData: ICreateAccountData) {
 
 export async function getAllCodeStudent() {
   const response = await axios.get<IVerificationCodeStudent[]>(
-    "/verificationCodeStudent/getAllCodeStudent"
+    "/verificationCodeStudent/getAllCodeStudent",
   );
   const allCodeStudent = response.data;
 
@@ -49,7 +49,7 @@ export async function getAllCodeStudent() {
 
 export async function getOneCodeStudent(id: number) {
   const response = await axios<IVerificationCodeStudent>(
-    `/verificationCodeStudent/getCodeStudent/${id}`
+    `/verificationCodeStudent/getCodeStudent/${id}`,
   );
   const oneCodeStudent = response.data;
   return oneCodeStudent;
@@ -57,7 +57,7 @@ export async function getOneCodeStudent(id: number) {
 
 export async function deleteCodeStudent(id: number) {
   const response = await axios.delete<IVerificationCodeStudent>(
-    `/verificationCodeStudent/deleteCodeStudent/${id}`
+    `/verificationCodeStudent/deleteCodeStudent/${id}`,
   );
   const deletedCodeStudent = response.data;
   return deletedCodeStudent;
@@ -69,7 +69,7 @@ export async function createCodeStudent({ code, email }: ICreateCodeStudent) {
     {
       code,
       email,
-    }
+    },
   );
   const createdCodeStudent = response.data;
   return createdCodeStudent;
@@ -83,7 +83,7 @@ export async function updateCodeStudent({
     `/verificationCodeStudent/updateCodeStudent/${id}`,
     {
       codeForStudent,
-    }
+    },
   );
   const updatedCodeStudent = response.data;
   return updatedCodeStudent;
@@ -91,7 +91,7 @@ export async function updateCodeStudent({
 
 export async function getAllDepartments() {
   const response = await axios<IDepartmentData[]>(
-    "/department/getAllDepartments"
+    "/department/getAllDepartments",
   );
   const allDepartments = response.data;
 
@@ -99,7 +99,7 @@ export async function getAllDepartments() {
 }
 export async function getAllCoursesFromDepartment(id: number | null) {
   const response = await axios<ICourse[]>(
-    `/department/getAllCoursesFromDepartment/${id}`
+    `/department/getAllCoursesFromDepartment/${id}`,
   );
   const allCourses = response.data;
 
@@ -116,7 +116,7 @@ export async function createComment({
     {
       content,
       whoCreator,
-    }
+    },
   );
 
   const commentCreated = response.data;
@@ -133,7 +133,7 @@ export async function createReply({
     {
       content,
       whoCreator,
-    }
+    },
   );
 
   const replyCreated = response.data;
@@ -143,7 +143,7 @@ export async function createReply({
 
 export async function deleteComment(id: number) {
   const response = await axios.delete<ICommentDataResult>(
-    `/comment/delete/${id}`
+    `/comment/delete/${id}`,
   );
   const commentDeleted = response.data;
 
@@ -162,7 +162,7 @@ export async function editComment(content: string, id: number) {
     `/comment/update/${id}`,
     {
       content,
-    }
+    },
   );
   const commentUpdated = response.data;
 
@@ -217,7 +217,7 @@ export async function addLikeComment({ id, like, statusLike }: IAddLike) {
     {
       like,
       statusLike,
-    }
+    },
   );
 
   const commentLiked = response.data;
@@ -233,7 +233,7 @@ export async function addUnlikeComment({
     {
       unlike,
       statusUnlike,
-    }
+    },
   );
 
   const commentUnliked = response.data;
@@ -257,7 +257,7 @@ export async function requestVerificationCode({
     {
       email,
       operation,
-    }
+    },
   );
 
   const messageAndCode = response.data;
@@ -290,7 +290,7 @@ export async function verifyCodeAndProceed({
       email,
       operation,
       code,
-    }
+    },
   );
 
   const messageAccepet = response.data;
@@ -300,7 +300,7 @@ export async function verifyCodeAndProceed({
 
 export async function getOneDepartment(id?: number | null) {
   const response = await axios<IDepartmentData>(
-    `/department/getOneDepartment/${id}`
+    `/department/getOneDepartment/${id}`,
   );
   const department = response.data;
 
@@ -320,7 +320,7 @@ export async function updateUserProfile({
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
   const updatedUser = response.data;
 
@@ -333,7 +333,7 @@ export async function addUnlikeReply({ id, unlike, statusUnlike }: IAddUnlike) {
     {
       unlike,
       statusUnlike,
-    }
+    },
   );
 
   const replyUnliked = response.data;
