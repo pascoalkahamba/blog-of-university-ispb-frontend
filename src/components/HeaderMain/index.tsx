@@ -103,11 +103,12 @@ export default function HeaderMain() {
       </Tabs.Tab>
     );
   });
-  const user = JSON.parse(
-    localStorage.getItem("currentUser") as string
-  ) as IUser;
+  const user =
+    typeof window !== "undefined"
+      ? (JSON.parse(localStorage.getItem("currentUser") as string) as IUser)
+      : null;
 
-  const { id, role } = user;
+  const { id, role } = user ?? { id: 0, role: "student" as const };
   const {
     query: { data: currentUser },
   } = useQueryUser(getOneUser, `getOneUser-${role}-${id}`, {
@@ -118,7 +119,7 @@ export default function HeaderMain() {
     deleteUser,
     showNotificationOnSuccess,
     showNotificationOnError,
-    `deleteUser-${role}-${id}`
+    `deleteUser-${role}-${id}`,
   );
 
   console.log("allDepartments", departments);
@@ -137,7 +138,7 @@ export default function HeaderMain() {
     notifications.show({
       title: `Exclusão da conta ${showRoleName(role)}`,
       message: `Senhor ${showRoleName(
-        role
+        role,
       )} sua conta não foi eliminda verifique os dados e tente novamente.`,
       position: "top-right",
       color: "red",
@@ -263,7 +264,7 @@ export default function HeaderMain() {
                   typeModal="deleteAccountOnHeader"
                   handleClick={handleDeleteAccount}
                   content={`Carissimo ${showRoleName(
-                    role
+                    role,
                   )}, tem certesa que deseja mesmo eliminar sua conta está acção irá
             eliminar permantemente a sua conta da vitrine online.`}
                 />

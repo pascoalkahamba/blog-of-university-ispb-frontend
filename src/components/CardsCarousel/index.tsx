@@ -10,14 +10,15 @@ import SkeletonComponent from "@/components/Skeleton";
 
 export default function CardsCarousel() {
   const theme = useMantineTheme();
-  const currentUser = JSON.parse(
-    localStorage.getItem("currentUser") as string
-  ) as IUser;
+  const currentUser =
+    typeof window !== "undefined"
+      ? (JSON.parse(localStorage.getItem("currentUser") as string) as IUser)
+      : null;
   const {
     data: allPosts,
     error,
     isPending,
-  } = useGetEverything(getAllPost, `allPosts${currentUser.id}`, null);
+  } = useGetEverything(getAllPost, `allPosts${currentUser?.id ?? ""}`, null);
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   if (isPending)
     return (
@@ -69,7 +70,7 @@ export default function CardsCarousel() {
           statusUnlike={statusUnlike}
         />
       </Carousel.Slide>
-    )
+    ),
   );
 
   return (

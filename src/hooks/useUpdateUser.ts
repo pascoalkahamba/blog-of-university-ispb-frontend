@@ -11,10 +11,13 @@ export function useUpdateUser<T, K>(
   mutationFunction: (value: T) => Promise<K>,
   notificationOnSuccess: () => void,
   notificationOnError: () => void,
-  queryKey?: string
+  queryKey?: string,
 ) {
   const queryClient = useQueryClient();
-  const userId = JSON.parse(localStorage.getItem("userId") as string) as number;
+  const userId =
+    typeof window !== "undefined"
+      ? (JSON.parse(localStorage.getItem("userId") as string) as number)
+      : 0;
 
   const mutation = useMutation({
     mutationFn: (value: T) => mutationFunction(value),

@@ -8,7 +8,8 @@ const axios = Axios.create({
 
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     if (token) {
       config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
@@ -20,7 +21,7 @@ axios.interceptors.request.use(
   (error) => {
     // Captura erros de configuração de requisição
     return Promise.reject(error);
-  }
+  },
 );
 
 axios.interceptors.response.use(
@@ -31,7 +32,7 @@ axios.interceptors.response.use(
   (error) => {
     // Captura erros de resposta, como 4xx ou 5xx
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axios;
