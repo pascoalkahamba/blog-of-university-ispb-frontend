@@ -46,7 +46,7 @@ const createStudentSchema = zod.object({
       (val) => val === null || val === undefined || val.toString().length >= 2,
       {
         message: "Número de matricula tem que ter no mínimo 2 caracteres.",
-      }
+      },
     ),
   courseId: zod.number({ message: "Escolha um courso." }),
   email: zod.string().email({ message: "Email invalida." }),
@@ -72,7 +72,7 @@ const verificationCodeSchema = zod.object({
   email: zod.string().email({ message: "email invalido" }),
   code: zod
     .string()
-    .min(6, { message: "Código deve ter mais de 6 caracteres." }),
+    .length(9, { message: "Código deve ter exatamente de 9 caracteres." }),
 });
 
 export {

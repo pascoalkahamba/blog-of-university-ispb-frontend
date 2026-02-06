@@ -34,7 +34,7 @@ export default function AuthCreateAccount(props: PaperProps) {
   const { data: courses } = useGetEverything(getAllCourses, "allCourses");
   const { data: allCodeStudent } = useGetEverything(
     getAllCodeStudent,
-    "allRegistrations"
+    "allRegistrations",
   );
   const {
     mutate,
@@ -44,7 +44,7 @@ export default function AuthCreateAccount(props: PaperProps) {
   } = useCreateAccount(
     createdAccount,
     showNotificationOnSuccess,
-    showNotificationOnError
+    showNotificationOnError,
   );
 
   const queryClient = useQueryClient();
@@ -72,6 +72,8 @@ export default function AuthCreateAccount(props: PaperProps) {
   const allCourses = useMemo(() => {
     return courses?.map(({ id, name }) => ({ value: `${id}`, label: name }));
   }, [courses]);
+
+  console.log("All code student:", allCodeStudent);
 
   const form = useForm({
     initialValues: {
@@ -109,10 +111,10 @@ export default function AuthCreateAccount(props: PaperProps) {
       return;
     }
 
-    if (!codeStudentExist(registrationNumber.toString())) {
+    if (!codeStudentExist(registrationNumber.toString().trim())) {
       form.setFieldError(
         "registrationNumber",
-        "O número de matricula não existe."
+        "O número de matricula não existe.",
       );
       notifications.show({
         title: "Criação de conta",
@@ -223,7 +225,7 @@ export default function AuthCreateAccount(props: PaperProps) {
             onChange={(event) =>
               form.setFieldValue(
                 "registrationNumber",
-                +event.currentTarget.value
+                +event.currentTarget.value,
               )
             }
             radius="md"

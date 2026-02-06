@@ -6,7 +6,8 @@ export function AuthFooter() {
     <div className={classes.footer}>
       <Container className={classes.inner}>
         <p className="italic">
-          Salão de beleza Nankova em Benguela - © Todos os direitos reservados
+          Blog do Instituto Superior de Politecnico de Benguela - © Todos os
+          direitos reservados
         </p>
       </Container>
     </div>
