@@ -1,6 +1,6 @@
 "use client";
 import cx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Avatar,
@@ -103,12 +103,17 @@ export default function HeaderMain() {
       </Tabs.Tab>
     );
   });
-  const user =
-    typeof window !== "undefined"
-      ? (JSON.parse(localStorage.getItem("currentUser") as string) as IUser)
-      : null;
 
-  const { id, role } = user ?? { id: 0, role: "student" as const };
+  const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    const user = JSON.parse(
+      localStorage.getItem("currentUser") as string,
+    ) as IUser;
+    setUser(user);
+  }, []);
+
+  const { id, role } = user as IUser;
   const {
     query: { data: currentUser },
   } = useQueryUser(getOneUser, `getOneUser-${role}-${id}`, {
