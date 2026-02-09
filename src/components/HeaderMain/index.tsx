@@ -113,7 +113,11 @@ export default function HeaderMain() {
     setUser(user);
   }, []);
 
-  const { id, role } = user as IUser;
+  const userId = user?.id;
+  const userRole = user?.role;
+
+  const id = userId as IUser["id"];
+  const role = userRole as IUser["role"];
   const {
     query: { data: currentUser },
   } = useQueryUser(getOneUser, `getOneUser-${role}-${id}`, {
